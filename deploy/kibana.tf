@@ -70,7 +70,7 @@ resource "kibana_visualization" "builds" {
                 "enabled": true,
                 "id": "5-orderAgg",
                 "params": {
-                    "field": "@t"
+                    "field": "time"
                 },
                 "schema": {
                     "aggFilter": ["!top_hits", "!percentiles", "!median", "!std_dev", "!derivative", "!moving_avg", "!serial_diff", "!cumulative_sum", "!avg_bucket", "!max_bucket", "!min_bucket", "!sum_bucket"],
@@ -142,7 +142,7 @@ resource "kibana_visualization" "builds" {
                 "enabled": true,
                 "id": "4-orderAgg",
                 "params": {
-                    "field": "@t"
+                    "field": "time"
                 },
                 "schema": {
                     "aggFilter": ["!top_hits", "!percentiles", "!median", "!std_dev", "!derivative", "!moving_avg", "!serial_diff", "!cumulative_sum", "!avg_bucket", "!max_bucket", "!min_bucket", "!sum_bucket"],
@@ -178,7 +178,7 @@ resource "kibana_visualization" "builds" {
                 "enabled": true,
                 "id": "6-orderAgg",
                 "params": {
-                    "field": "@t"
+                    "field": "time"
                 },
                 "schema": {
                     "aggFilter": ["!top_hits", "!percentiles", "!median", "!std_dev", "!derivative", "!moving_avg", "!serial_diff", "!cumulative_sum", "!avg_bucket", "!max_bucket", "!min_bucket", "!sum_bucket"],
@@ -214,7 +214,7 @@ resource "kibana_visualization" "builds" {
                 "enabled": true,
                 "id": "7-orderAgg",
                 "params": {
-                    "field": "@t"
+                    "field": "time"
                 },
                 "schema": {
                     "aggFilter": ["!top_hits", "!percentiles", "!median", "!std_dev", "!derivative", "!moving_avg", "!serial_diff", "!cumulative_sum", "!avg_bucket", "!max_bucket", "!min_bucket", "!sum_bucket"],
