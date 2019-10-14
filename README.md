@@ -2,7 +2,8 @@
 
 This fully-functional MVP shows a microservice-based logging platform in a minimal functional style.
 
-The solution contains lambdas to capture
+The solution contains lambdas to capture and store in ElasticSearch
+- CloudWatch Logs
 - ALB and ELB logs (from S3)
 - CodeBuild projects (from AWS Events)
 - Autoscaling and ECS deployments (from AWS Events)
