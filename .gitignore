@@ -1,0 +1,9 @@
+#test
+TestResults
+
+#build
+bin
+obj
+
+#ide
+.vs

@@ -1,0 +1,105 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      # set some environment variables
+      # these are all computed from incoming environment variables
+      - TF_VAR_repo_name=`basename $CODEBUILD_SOURCE_REPO_URL`
+      - TF_VAR_repo_name=`echo $TF_VAR_repo_name | tr '[:upper:]' '[:lower:]'`
+      - TF_VAR_repo_name=`echo $TF_VAR_repo_name | sed 's/_/-/g'` # no underscores
+      - TF_VAR_repo_name=`echo $TF_VAR_repo_name | sed 's/\./-/g'` # no dots
+      - TF_VAR_branch_name=`git name-rev $CODEBUILD_RESOLVED_SOURCE_VERSION --name-only`
+      - TF_VAR_branch_name=`basename $TF_VAR_branch_name`
+      - TF_VAR_branch_name=`echo $TF_VAR_branch_name | tr '[:upper:]' '[:lower:]'`
+      - TF_VAR_branch_name=`echo $TF_VAR_branch_name | sed 's/_/-/g'` # no underscores
+      - TF_VAR_branch_name=`echo $TF_VAR_branch_name | sed 's/\./-/g'` # no dots
+      - TF_VAR_ecr_repo=002067833750.dkr.ecr.us-east-1.amazonaws.com/altered
+      - TF_VAR_source_rev=$CODEBUILD_RESOLVED_SOURCE_VERSION
+      # todo error if repo_name + branch_name > 63
+      # environment: see TF_VAR_ and CODEBUILD_
+      - cat /etc/os-release
+      - printenv
+      - sudo apt-get update -yqq && sudo apt-get install -yqq apt-transport-https
+      # install stuff
+      # this will be removed and preinstalled into docker image by -deploy project
+      # terraform
+      #- wget -nv https://releases.hashicorp.com/terraform/0.12.0-beta1/terraform_0.12.0-beta1_linux_amd64.zip
+      #- unzip -qq terraform_0.12.0-beta1_linux_amd64.zip
+      #- sudo install terraform /usr/local/bin/
+      #- terraform --version
+      #- wget -nv http://terraform-0.12.0-dev-snapshots.s3-website-us-west-2.amazonaws.com/terraform-provider-aws/1.60.0-dev20190216H00-dev/terraform-provider-aws_1.60.0-dev20190216H00-dev_linux_amd64.zip
+      #- unzip -qq terraform-provider-aws_1.60.0-dev20190216H00-dev_linux_amd64.zip -d ~/.terraform.d/plugins
+      - wget -nv https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip
+      - unzip terraform_0.11.11_linux_amd64.zip
+      - sudo install terraform /usr/local/bin/
+      - terraform --version
+      # dotnet
+      - wget -q https://packages.microsoft.com/config/ubuntu/14.04/packages-microsoft-prod.deb
+      - sudo dpkg -i packages-microsoft-prod.deb
+      - sudo apt-get clean -yqq && sudo apt-get update -yqq
+      - sudo apt-get install -yqq dotnet-sdk-2.1
+      - dotnet --version
+      # jq
+      - sudo apt-get install -yqq jq
+      # go
+      - sudo apt-get purge golang*
+      - sudo add-apt-repository ppa:gophers/archive
+      - sudo apt-get update && sudo apt-get install -yqq golang-1.9
+      - PATH=$PATH:/usr/lib/go-1.9/bin
+      - go version
+  pre_build:
+    commands:
+      # install extra project-specific stuff
+      - git clone https://github.com/aumfer/alog alog
+      #- echo "null" | dotnet run -p alog "CodeBuild Start" $CODEBUILD_BUILD_ARN
+      # kibana
+      - BEGIN=$PWD
+      - mkdir -p $GOPATH/src/github.com/ewilde; cd $GOPATH/src/github.com/ewilde
+      - git clone https://github.com/ewilde/terraform-provider-kibana terraform-provider-kibana
+      - cd $GOPATH/src/github.com/ewilde/terraform-provider-kibana
+      #- make build
+      - mkdir -p ~/.terraform.d/plugins
+      - go build -o ~/.terraform.d/plugins/terraform-provider-kibana
+      - cd $BEGIN
+  build:
+    commands:
+      # node
+      #-
+      # lambda
+      - dotnet publish -v q -c Release src/Altered.Logs
+      - cd src/Altered.Logs/bin/Release/netcoreapp2.1/publish
+      - zip -q -r - . >  ../../../../../../publish.zip
+      - cd            ../../../../../../
+      # docker
+      - docker build -q -t $TF_VAR_repo_name-$TF_VAR_branch_name:$TF_VAR_source_rev --build-arg TF_VAR_repo_name=$TF_VAR_repo_name --build-arg TF_VAR_source_rev=$TF_VAR_source_rev .
+      - docker tag $TF_VAR_repo_name-$TF_VAR_branch_name:$TF_VAR_source_rev $TF_VAR_ecr_repo:$TF_VAR_repo_name-$TF_VAR_branch_name-$TF_VAR_source_rev
+      - eval $(aws ecr get-login --no-include-email)
+      - docker push $TF_VAR_ecr_repo:$TF_VAR_repo_name-$TF_VAR_branch_name-$TF_VAR_source_rev
+      - echo "{\"tag\":\"$TF_VAR_ecr_repo:$TF_VAR_repo_name-$TF_VAR_branch_name-$TF_VAR_source_rev\"}" | dotnet run -p alog "Docker Build" $CODEBUILD_BUILD_ARN
+  post_build:
+    commands:
+      - cd deploy
+      # needed for tags on ecs services
+      - aws ecs put-account-setting --name serviceLongArnFormat --value enabled
+      - aws ecs put-account-setting --name taskLongArnFormat --value enabled
+      - aws ecs put-account-setting --name containerInstanceLongArnFormat --value enabled
+      - terraform init --backend-config="key=$TF_VAR_repo_name/$TF_VAR_branch_name"
+      #- terraform plan | dotnet run -p ../alog "Terraform Plan" $CODEBUILD_BUILD_ARN
+      - terraform apply -auto-approve
+      - terraform state pull > ../tfstate
+      - TF_OUT_url=$(terraform output url)
+      - cd ..
+      - cat tfstate | jq '.modules[].outputs' | dotnet run -p alog "Terraform Apply" $CODEBUILD_BUILD_ARN
+      # test environment
+      - app=$TF_VAR_repo_name
+      - env=$TF_VAR_branch_name
+      - sha=$TF_VAR_source_rev
+      # prefer dotnet test
+      #- dotnet test src/Altered.Logs.Test --collect:"AlteredDataCollector" --test-adapter-path:"."
+      # under-the-hood calls vstest (shown here for troubleshooting)
+      - cd ../../../../../../
+      - dotnet publish -v q -c Release src/Altered.Logs.Tests
+      - cd src/Altered.Logs.Tests/bin/Release/netcoreapp2.1/publish
+      - dotnet vstest --Collect:AlteredDataCollector --TestAdapterPath:"." --Framework:".NETCoreApp,Version=v2.1" Altered.Logs.Tests.dll
+      - # todo output publish.zip to s3 -> sqs -> readyapi runner service
