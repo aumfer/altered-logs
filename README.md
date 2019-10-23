@@ -1,6 +1,6 @@
 # altered-logs
 
-This fully-functional MVP shows a microservice-based logging platform in a minimal functional style.
+This fully-functional MVP shows a microservice-based logging platform in a minimal functional style. Builds and deploys on Linux.
 
 The solution contains lambdas to capture and store in ElasticSearch
 - CloudWatch Logs
