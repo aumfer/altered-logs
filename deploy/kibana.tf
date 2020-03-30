@@ -13,7 +13,7 @@ resource "kibana_search" "builds" {
   sort_by_columns = ["time"]
 
   search = {
-    index = "${data.kibana_index.main.id}"
+    index = "${data.kibana_index.acl.id}"
 
     filters = [
       {
