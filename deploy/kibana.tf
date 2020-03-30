@@ -15,30 +15,31 @@ resource "kibana_search" "builds" {
   search = {
     index = "${data.kibana_index.acl.id}"
 
-    filters {
-      "bool" {
-        should {
-          prefix {
-            "log.name.keyword" = "CodeBuild"
-          }
-        }
-        should {
-            prefix {
-              "log.name.keyword" = "Docker"
-            }
-          }
-        should {
-          prefix {
-            "log.name.keyword" = "Terraform"
-          }
-        }
-        should {
-          prefix {
-            "log.name.keyword" = "Test"
-          }
-        }
-      }
-    }
+    #https://github.com/ewilde/terraform-provider-kibana/issues/40
+    #filters {
+    #  "bool" {
+    #    should {
+    #      prefix {
+    #        "log.name.keyword" = "CodeBuild"
+    #      }
+    #    }
+    #    should {
+    #        prefix {
+    #          "log.name.keyword" = "Docker"
+    #        }
+    #      }
+    #    should {
+    #      prefix {
+    #        "log.name.keyword" = "Terraform"
+    #      }
+    #    }
+    #    should {
+    #      prefix {
+    #        "log.name.keyword" = "Test"
+    #      }
+    #    }
+    #  }
+    #}
   }
 }
 
