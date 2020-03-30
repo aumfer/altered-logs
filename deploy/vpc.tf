@@ -1,5 +1,5 @@
 data "aws_vpc" "vpc" {
-  id = "vpc-79f07a1f"
+  id = "vpc-cdab70a8"
 }
 
 data "aws_subnet_ids" "subnets" {
