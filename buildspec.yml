@@ -20,32 +20,32 @@ phases:
       # environment: see TF_VAR_ and CODEBUILD_
       - cat /etc/os-release
       - printenv
-      - sudo apt-get update -yqq && sudo apt-get install -yqq apt-transport-https
+      - apt-get update -yqq && apt-get install -yqq apt-transport-https
       # install stuff
       # this will be removed and preinstalled into docker image by -deploy project
       # terraform
       #- wget -nv https://releases.hashicorp.com/terraform/0.12.0-beta1/terraform_0.12.0-beta1_linux_amd64.zip
       #- unzip -qq terraform_0.12.0-beta1_linux_amd64.zip
-      #- sudo install terraform /usr/local/bin/
+      #- install terraform /usr/local/bin/
       #- terraform --version
       #- wget -nv http://terraform-0.12.0-dev-snapshots.s3-website-us-west-2.amazonaws.com/terraform-provider-aws/1.60.0-dev20190216H00-dev/terraform-provider-aws_1.60.0-dev20190216H00-dev_linux_amd64.zip
       #- unzip -qq terraform-provider-aws_1.60.0-dev20190216H00-dev_linux_amd64.zip -d ~/.terraform.d/plugins
       - wget -nv https://releases.hashicorp.com/terraform/0.11.11/terraform_0.11.11_linux_amd64.zip
       - unzip terraform_0.11.11_linux_amd64.zip
-      - sudo install terraform /usr/local/bin/
+      - install terraform /usr/local/bin/
       - terraform --version
       # dotnet
       - wget -q https://packages.microsoft.com/config/ubuntu/14.04/packages-microsoft-prod.deb
-      - sudo dpkg -i packages-microsoft-prod.deb
-      - sudo apt-get clean -yqq && sudo apt-get update -yqq
-      - sudo apt-get install -yqq dotnet-sdk-2.1
+      - dpkg -i packages-microsoft-prod.deb
+      - apt-get clean -yqq && apt-get update -yqq
+      - apt-get install -yqq dotnet-sdk-2.1
       - dotnet --version
       # jq
-      - sudo apt-get install -yqq jq
+      - apt-get install -yqq jq
       # go
-      - sudo apt-get purge golang*
-      - sudo add-apt-repository ppa:gophers/archive
-      - sudo apt-get update && sudo apt-get install -yqq golang-1.9
+      - apt-get purge golang*
+      - add-apt-repository ppa:gophers/archive
+      - apt-get update && apt-get install -yqq golang-1.9
       - PATH=$PATH:/usr/lib/go-1.9/bin
       - go version
   pre_build:
