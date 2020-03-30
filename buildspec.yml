@@ -14,7 +14,7 @@ phases:
       - TF_VAR_branch_name=`echo $TF_VAR_branch_name | tr '[:upper:]' '[:lower:]'`
       - TF_VAR_branch_name=`echo $TF_VAR_branch_name | sed 's/_/-/g'` # no underscores
       - TF_VAR_branch_name=`echo $TF_VAR_branch_name | sed 's/\./-/g'` # no dots
-      - TF_VAR_ecr_repo=002067833750.dkr.ecr.us-east-1.amazonaws.com/altered
+      - TF_VAR_ecr_repo=021370510137.dkr.ecr.us-east-1.amazonaws.com/altered
       - TF_VAR_source_rev=$CODEBUILD_RESOLVED_SOURCE_VERSION
       # todo error if repo_name + branch_name > 63
       # environment: see TF_VAR_ and CODEBUILD_
