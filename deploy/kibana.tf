@@ -15,33 +15,30 @@ resource "kibana_search" "builds" {
   search = {
     index = "${data.kibana_index.acl.id}"
 
-    filters = [
-      {
-        bool = {
-          should = [{
-            prefix = {
-              "log.name.keyword" = "CodeBuild"
-            }
-          },
-            {
-              prefix = {
-                "log.name.keyword" = "Docker"
-              }
-            },
-            {
-              prefix = {
-                "log.name.keyword" = "Terraform"
-              }
-            },
-            {
-              prefix = {
-                "log.name.keyword" = "Test"
-              }
-            },
-          ]
+    filters {
+      bool {
+        should {
+          prefix {
+            "log.name.keyword" = "CodeBuild"
+          }
         }
-      },
-    ]
+        should {
+            prefix {
+              "log.name.keyword" = "Docker"
+            }
+          }
+        should {
+          prefix {
+            "log.name.keyword" = "Terraform"
+          }
+        }
+        should {
+          prefix {
+            "log.name.keyword" = "Test"
+          }
+        }
+      }
+    }
   }
 }
 
