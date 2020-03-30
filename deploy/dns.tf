@@ -1,11 +1,11 @@
 
 data "aws_route53_zone" "default" {
-  name    = "altered-logs.${local.domain_name}."
+  name    = "${local.domain_name}."
 }
 
 resource "aws_route53_record" "default" {
   zone_id = "${data.aws_route53_zone.default.zone_id}"
-  name    = "${var.branch_name}.altered-logs.${local.domain_name}"
+  name    = "${var.branch_name}.${var.repo_name}.${local.domain_name}"
   type    = "A"
 
   alias {
