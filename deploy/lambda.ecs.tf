@@ -3,7 +3,7 @@ resource "aws_lambda_function" "ecs" {
   function_name    = "${var.repo_name}-${var.branch_name}-ecs"
   role             = "arn:aws:iam::002067833750:role/acct-managed/altered-logs-lambda"
   handler          = "Altered.Logs::Altered.Logs.Ecs.LogEcsTaskStateChangeLambda::Execute"
-  source_code_hash = "${filebase64sha256("../publish.zip")}"
+  source_code_hash = "${base64sha256(file("../publish.zip"))}"
   runtime          = "dotnetcore2.1"
   timeout          = "59"                                                              # srsly amazon should just have a seperate first-run timeout
 
