@@ -5,7 +5,7 @@ data "aws_s3_bucket" "lb_logs" {
 resource "aws_lb" "main" {
   name            = "${var.repo_name}-${var.branch_name}"
   security_groups = ["${aws_security_group.security_group.id}"]
-  subnets         = "${data.aws_subnet_ids.subnets.ids}"
+  subnets         = ["${data.aws_subnet_ids.subnets.ids}"]
   internal        = false
 
   # todo https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-access-logs.html#attach-bucket-policy
