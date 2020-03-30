@@ -49,7 +49,7 @@ phases:
       - PATH=$PATH:/usr/lib/go-1.9/bin
       - go version
   pre_build:
-    commands:
+commands:
       # install extra project-specific stuff
       - git clone https://github.com/aumfer/alog alog
       #- echo "null" | dotnet run -p alog "CodeBuild Start" $CODEBUILD_BUILD_ARN
@@ -72,11 +72,11 @@ phases:
       - zip -q -r - . >  ../../../../../../publish.zip
       - cd            ../../../../../../
       # docker
-      - docker build -q -t $TF_VAR_repo_name-$TF_VAR_branch_name:$TF_VAR_source_rev --build-arg TF_VAR_repo_name=$TF_VAR_repo_name --build-arg TF_VAR_source_rev=$TF_VAR_source_rev .
-      - docker tag $TF_VAR_repo_name-$TF_VAR_branch_name:$TF_VAR_source_rev $TF_VAR_ecr_repo:$TF_VAR_repo_name-$TF_VAR_branch_name-$TF_VAR_source_rev
+      - docker build -q -t $TF_VAR_repo_name:$TF_VAR_branch_name --build-arg TF_VAR_repo_name=$TF_VAR_repo_name --build-arg TF_VAR_source_rev=$TF_VAR_source_rev .
+      - docker tag $TF_VAR_repo_name:$TF_VAR_branch_name $TF_VAR_ecr_repo:$TF_VAR_repo_name-$TF_VAR_branch_name
       - eval $(aws ecr get-login --no-include-email)
-      - docker push $TF_VAR_ecr_repo:$TF_VAR_repo_name-$TF_VAR_branch_name-$TF_VAR_source_rev
-      - echo "{\"tag\":\"$TF_VAR_ecr_repo:$TF_VAR_repo_name-$TF_VAR_branch_name-$TF_VAR_source_rev\"}" | dotnet run -p alog "Docker Build" $CODEBUILD_BUILD_ARN
+      - docker push $TF_VAR_ecr_repo:$TF_VAR_repo_name:$TF_VAR_branch_name
+      - echo "{\"tag\":\"$TF_VAR_ecr_repo:$TF_VAR_repo_name:$TF_VAR_branch_name\"}" | dotnet run -p alog "Docker Build" $CODEBUILD_BUILD_ARN
   post_build:
     commands:
       - cd deploy

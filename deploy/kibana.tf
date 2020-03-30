@@ -16,7 +16,7 @@ resource "kibana_search" "builds" {
     index = "${data.kibana_index.acl.id}"
 
     filters {
-      bool {
+      "bool" {
         should {
           prefix {
             "log.name.keyword" = "CodeBuild"
