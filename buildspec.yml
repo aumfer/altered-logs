@@ -43,21 +43,21 @@ phases:
       # jq
       - apt-get install -yqq jq
       # go
-      - apt-get purge golang*
-      - add-apt-repository ppa:gophers/archive
-      - apt-get update && apt-get install -yqq golang-1.9
-      - PATH=$PATH:/usr/lib/go-1.9/bin
-      - go version
+      #- apt-get purge golang*
+      #- add-apt-repository ppa:gophers/archive
+      #- apt-get update && apt-get install -yqq golang-1.9
+      #- PATH=$PATH:/usr/lib/go-1.9/bin
+      #- go version
   pre_build:
     commands:
       # install extra project-specific stuff
       - git clone https://github.com/aumfer/alog alog
       #- echo "null" | dotnet run -p alog "CodeBuild Start" $CODEBUILD_BUILD_ARN
       # kibana
-      - BEGIN=$PWD
-      - mkdir -p $GOPATH/src/github.com/ewilde; cd $GOPATH/src/github.com/ewilde
-      - git clone https://github.com/ewilde/terraform-provider-kibana terraform-provider-kibana
-      - cd $GOPATH/src/github.com/ewilde/terraform-provider-kibana
+      #- BEGIN=$PWD
+      #- mkdir -p $GOPATH/src/github.com/ewilde; cd $GOPATH/src/github.com/ewilde
+      #- git clone https://github.com/ewilde/terraform-provider-kibana terraform-provider-kibana
+      #- cd $GOPATH/src/github.com/ewilde/terraform-provider-kibana
       #- make build
       - mkdir -p ~/.terraform.d/plugins
       - go build -o ~/.terraform.d/plugins/terraform-provider-kibana
