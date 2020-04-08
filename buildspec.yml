@@ -59,9 +59,9 @@ phases:
       #- git clone https://github.com/ewilde/terraform-provider-kibana terraform-provider-kibana
       #- cd $GOPATH/src/github.com/ewilde/terraform-provider-kibana
       #- make build
-      - mkdir -p ~/.terraform.d/plugins
-      - go build -o ~/.terraform.d/plugins/terraform-provider-kibana
-      - cd $BEGIN
+      #- mkdir -p ~/.terraform.d/plugins
+      #- go build -o ~/.terraform.d/plugins/terraform-provider-kibana
+      #- cd $BEGIN
   build:
     commands:
       # node
