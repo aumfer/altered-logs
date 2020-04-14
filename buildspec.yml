@@ -100,7 +100,7 @@ phases:
       #- dotnet test src/Altered.Logs.Test --collect:"AlteredDataCollector" --test-adapter-path:"."
       # under-the-hood calls vstest (shown here for troubleshooting)
       - cd ../../../../../../
-      - dotnet publish -v q -c Release src/Altered.Logs.Tests
-      - cd src/Altered.Logs.Tests/bin/Release/netcoreapp2.1/publish
-      - dotnet vstest --Collect:AlteredDataCollector --TestAdapterPath:"." --Framework:".NETCoreApp,Version=v2.1" Altered.Logs.Tests.dll
+      #- dotnet publish -v q -c Release src/Altered.Logs.Tests
+      #- cd src/Altered.Logs.Tests/bin/Release/netcoreapp2.1/publish
+      #- dotnet vstest --Collect:AlteredDataCollector --TestAdapterPath:"." --Framework:".NETCoreApp,Version=v2.1" Altered.Logs.Tests.dll
       - # todo output publish.zip to s3 -> sqs -> readyapi runner service

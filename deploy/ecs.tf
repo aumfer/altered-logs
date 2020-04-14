@@ -20,7 +20,7 @@ module "container_definition" {
   ]
 
   log_options = {
-    "awslogs-group"         = "aws_cloudwatch_log_group.container_logs.arn" # todo fixme
+    "awslogs-group"         = "${aws_cloudwatch_log_group.container_logs.arn}"
     "awslogs-region"        = "${var.aws_region}"
     "awslogs-stream-prefix" = "ecs"
   }
