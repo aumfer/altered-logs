@@ -37,7 +37,7 @@ resource "aws_lb_listener" "https" {
   load_balancer_arn = "${aws_lb.main.arn}"
   port              = "443"
   protocol          = "HTTPS"
-  certificate_arn   = "arn:aws:acm:us-east-1:002067833750:certificate/cc6b43e3-2073-471b-bb7f-7ac6dc60cf1e"
+  certificate_arn   = "arn:aws:acm:us-east-1:021370510137:certificate/b5933088-78d3-46b4-bf44-efd582040c14"
 
   default_action {
     type = "redirect"
