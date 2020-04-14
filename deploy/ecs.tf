@@ -89,7 +89,7 @@ resource "aws_security_group_rule" "allow_https_ingress" {
 }
 
 resource "aws_ecs_service" "default" {
-  name            = "${local.altered_tags}"
+  name            = "${var.repo_name}-${var.branch_name}"
   task_definition = "${aws_ecs_task_definition.default.family}:${aws_ecs_task_definition.default.revision}"
 
   desired_count = 1
