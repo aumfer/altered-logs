@@ -14,7 +14,7 @@ resource "aws_lb" "main" {
     bucket  = "${data.aws_s3_bucket.lb_logs.bucket}"
   }
 
-  tags = "${merge(module.tags.tags, local.altered_tags)}"
+  tags = "${local.altered_tags}"
 }
 
 resource "aws_lb_listener" "http" {

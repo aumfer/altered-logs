@@ -11,13 +11,6 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
-module "tags" {
-  source    = "git::https://github.com/cloudposse/terraform-terraform-label.git?ref=0.1.6"
-  name      = "${var.repo_name}-${var.branch_name}"
-  namespace = "cai"
-  stage     = "${local.stage}"
-}
-
 locals {
   altered_tags = {
     repo = "${var.repo_name}"

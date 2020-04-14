@@ -16,7 +16,7 @@ resource "aws_lambda_function" "alb" {
   runtime          = "dotnetcore2.1"
   timeout          = "59"                                                             # srsly amazon should just have a seperate first-run timeout
 
-  tags = "${module.tags.tags}"
+  tags = "${local.altered_tags}"
 
   environment {
     variables = "${local.altered_tags}"

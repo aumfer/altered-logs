@@ -8,6 +8,6 @@ data "aws_subnet_ids" "subnets" {
 
 resource "aws_security_group" "security_group" {
   vpc_id = "${data.aws_vpc.vpc.id}"
-  name   = "${module.tags.id}"
-  tags   = "${module.tags.tags}"
+  name   = "${var.repo_name}-${var.branch_name}"
+  tags   = "${local.altered_tags}"
 }

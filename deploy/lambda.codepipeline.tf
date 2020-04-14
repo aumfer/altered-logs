@@ -8,7 +8,7 @@ resource "aws_lambda_function" "codepipeline" {
   #timeout          = "59"                                                              # srsly amazon should just have a seperate first-run timeout
   timeout = "300" # for slack
 
-  tags = "${module.tags.tags}"
+  tags = "${local.altered_tags}"
 
   environment {
     variables = "${local.altered_tags}"

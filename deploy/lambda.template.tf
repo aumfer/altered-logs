@@ -7,7 +7,7 @@ resource "aws_lambda_function" "template" {
   runtime          = "dotnetcore2.1"
   timeout          = "59"                                                             # srsly amazon should just have a seperate first-run timeout
 
-  tags = "${module.tags.tags}"
+  tags = "${local.altered_tags}"
 
   environment {
     variables = "${local.altered_tags}"
@@ -18,7 +18,7 @@ resource "aws_lb_target_group" "template" {
   name        = "${var.repo_name}-${var.branch_name}-template"
   target_type = "lambda"
 
-  tags = "${module.tags.tags}"
+  tags = "${local.altered_tags}"
 }
 
 resource "aws_lb_target_group_attachment" "template" {

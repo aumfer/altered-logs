@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_log_group" "container_logs" {
   name = "${var.repo_name}-${var.branch_name}"
-  tags = "${module.tags.tags}"
+  tags = "${local.altered_tags}"
 }
 
 module "container_definition" {
@@ -50,7 +50,7 @@ resource "aws_ecs_cluster" "cluster" {
 }
 
 resource "aws_ecs_task_definition" "default" {
-  family                   = "${module.tags.id}"
+  family                   = "${var.repo_name}-${var.branch_name}"
   container_definitions    = "${module.container_definition.json}"
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
@@ -58,7 +58,7 @@ resource "aws_ecs_task_definition" "default" {
   memory                   = "512"
   execution_role_arn       = "arn:aws:iam::002067833750:role/acct-managed/altered-api"
   task_role_arn            = "arn:aws:iam::002067833750:role/acct-managed/altered-api"
-  tags                     = "${module.tags.tags}"
+  tags                     = "${local.altered_tags}"
 }
 
 resource "aws_security_group_rule" "allow_all_egress" {
@@ -89,7 +89,7 @@ resource "aws_security_group_rule" "allow_https_ingress" {
 }
 
 resource "aws_ecs_service" "default" {
-  name            = "${module.tags.id}"
+  name            = "${local.altered_tags}"
   task_definition = "${aws_ecs_task_definition.default.family}:${aws_ecs_task_definition.default.revision}"
 
   desired_count = 1
@@ -99,7 +99,7 @@ resource "aws_ecs_service" "default" {
   cluster = "${aws_ecs_cluster.cluster.arn}"
 
   #enable_ecs_managed_tags = true
-  tags           = "${merge(module.tags.tags, local.altered_tags)}"
+  tags           = "${local.altered_tags}"
   propagate_tags = "SERVICE"
 
   network_configuration {
@@ -131,7 +131,7 @@ resource "aws_lb_target_group" "ecs" {
   target_type = "ip"
   vpc_id      = "${data.aws_vpc.vpc.id}"
 
-  tags = "${module.tags.tags}"
+  tags = "${local.altered_tags}"
 }
 
 resource "aws_lb_listener_rule" "ecs_https" {

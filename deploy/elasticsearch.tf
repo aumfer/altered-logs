@@ -43,7 +43,7 @@ resource "aws_elasticsearch_domain" "search" {
     automated_snapshot_start_hour = 0
   }
 
-  tags = "${module.tags.tags}"
+  tags = "${local.altered_tags}"
 
   #lifecycle {
   #  prevent_destroy = true

@@ -1,7 +1,7 @@
 data "aws_cloudwatch_log_group" "acl" {
   name = "acl"
 
-  #tags = "${module.tags.tags}"
+  #tags = "${local.altered_tags}"
 }
 
 data "aws_s3_bucket" "elb_logs" {
