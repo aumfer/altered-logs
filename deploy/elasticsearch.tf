@@ -15,6 +15,9 @@ data "aws_iam_policy_document" "es_policy" {
   }
 }
 
+resource "aws_iam_service_linked_role" "slr" {
+  aws_service_name = "es.amazonaws.com"
+}
 
 resource "aws_elasticsearch_domain" "search" {
   domain_name           = "${var.repo_name}-${var.branch_name}"
