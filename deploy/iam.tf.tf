@@ -1,5 +1,5 @@
 resource "aws_iam_role" "iam" {
-    name = "${var.repo_name}-${var.branch_name}-alb"
+    name = "${var.repo_name}-${var.branch_name}-iam"
     tags = "${local.altered_tags}"
 
     assume_role_policy = "${data.aws_iam_policy_document.iam_assume_role_policy.json}"

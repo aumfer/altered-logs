@@ -56,8 +56,8 @@ resource "aws_ecs_task_definition" "default" {
   network_mode             = "awsvpc"
   cpu                      = "256"
   memory                   = "512"
-  execution_role_arn       = "arn:aws:iam::002067833750:role/acct-managed/altered-api"
-  task_role_arn            = "arn:aws:iam::002067833750:role/acct-managed/altered-api"
+  execution_role_arn       = "${aws_iam_role.iam.arn}"
+  task_role_arn            = "${aws_iam_role.iam.arn}"
   tags                     = "${local.altered_tags}"
 }
 
