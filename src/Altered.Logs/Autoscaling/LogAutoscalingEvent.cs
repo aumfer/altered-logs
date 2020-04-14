@@ -40,7 +40,7 @@ namespace Altered.Logs.Autoscaling
              let alteredLog = new AlteredLog
              {
                  Time = time,
-                 App = app,
+                 Repo = app,
                  Env = env,
                  Sha = sha,
                  Log = JObject.FromObject(log, AlteredJson.DefaultJsonSerializer)

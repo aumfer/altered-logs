@@ -46,7 +46,7 @@ namespace Altered.Logs.Ecs
              let alteredLog = new AlteredLog
              {
                  Time = taskStateChange.Time,
-                 App = app,
+                 Repo = app,
                  Env = env,
                  Sha = sha,
                  Log = JObject.FromObject(log, AlteredJson.DefaultJsonSerializer)

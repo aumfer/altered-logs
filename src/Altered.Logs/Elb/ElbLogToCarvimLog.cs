@@ -48,7 +48,7 @@ namespace Altered.Logs.Elb
              select new AlteredLog
              {
                  Time = r.Timestamp,
-                 App = app,
+                 Repo = app,
                  Env = env,
                  Sha = sha,
                  Log = JObject.FromObject(log, AlteredJson.DefaultJsonSerializer)

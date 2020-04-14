@@ -32,7 +32,7 @@ namespace Altered.Logs.Codebuild
          let log = new AlteredLog
          {
              Time = time,
-             App = app,
+             Repo = app,
              Env = env,
              Sha = sha,
              Log = codebuildEvent
