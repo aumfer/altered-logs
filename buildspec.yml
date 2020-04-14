@@ -86,11 +86,12 @@ phases:
       - aws ecs put-account-setting --name containerInstanceLongArnFormat --value enabled
       - terraform init --backend-config="key=$TF_VAR_repo_name/$TF_VAR_branch_name"
       #- terraform plan | dotnet run -p ../alog "Terraform Plan" $CODEBUILD_BUILD_ARN
-      - terraform apply -auto-approve
-      - terraform state pull > ../tfstate
-      - TF_OUT_url=$(terraform output url)
+      - terraform destroy -auto-approve
+      #- terraform apply -auto-approve
+      #- terraform state pull > ../tfstate
+      #- TF_OUT_url=$(terraform output url)
       - cd ..
-      - cat tfstate | jq '.modules[].outputs' | dotnet run -p alog "Terraform Apply" $CODEBUILD_BUILD_ARN
+      #- cat tfstate | jq '.modules[].outputs' | dotnet run -p alog "Terraform Apply" $CODEBUILD_BUILD_ARN
       # test environment
       - app=$TF_VAR_repo_name
       - env=$TF_VAR_branch_name
