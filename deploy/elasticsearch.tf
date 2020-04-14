@@ -33,8 +33,8 @@ resource "aws_elasticsearch_domain" "search" {
   access_policies = "${data.aws_iam_policy_document.es_policy.json}"
 
   vpc_options {
-    subnet_ids = ["${data.aws_subnet_ids.subnets.ids}"]
-    #subnet_ids = ["${data.aws_subnet_ids.subnets.ids[0]}"]
+    #subnet_ids = ["${data.aws_subnet_ids.subnets.ids}"]
+    subnet_ids = ["${data.aws_subnet_ids.subnets.ids[0]}"]
 
     security_group_ids = ["${aws_security_group.security_group.id}"]
   }
