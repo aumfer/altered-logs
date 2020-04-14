@@ -1,8 +1,8 @@
 resource "aws_iam_role" "iam_role" {
     name = "${var.repo_name}-${var.branch_name}-alb"
-    tags = local.altered_tags
+    tags = "${local.altered_tags}"
 
-    assume_role_policy = data.aws_iam_policy_document.iam_lambda_alb_assume_role_policy.json
+    assume_role_policy = "${data.aws_iam_policy_document.iam_lambda_alb_assume_role_policy.json}"
 }
 
 data "aws_iam_policy_document" "iam_lambda_alb" {
@@ -53,16 +53,16 @@ resource "aws_iam_policy" "iam_lambda_alb" {
 }
 
 resource "aws_iam_role_policy_attachment" "iam_lambda_alb" {
-  role       = aws_iam_role.iam_lambda_alb.name
-  policy_arn = aws_iam_policy.iam_lambda_alb.arn
+  role       = "${aws_iam_role.iam_lambda_alb.name}"
+  policy_arn = "${aws_iam_policy.iam_lambda_alb.arn}"
 }
 
 resource "aws_iam_role_policy_attachment" "iam_lambda_alb_AmazonECSTaskExecutionRolePolicy" {
-  role       = aws_iam_role.iam_lambda_alb.name
+  role       = "${aws_iam_role.iam_lambda_alb.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
 resource "aws_iam_role_policy_attachment" "iam_lambda_alb_AmazonEC2ContainerServiceforEC2Role" {
-  role       = aws_iam_role.iam_lambda_alb.name
+  role       = "${aws_iam_role.iam_lambda_alb.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
