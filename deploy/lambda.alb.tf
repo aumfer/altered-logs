@@ -19,7 +19,7 @@ resource "aws_lambda_function" "alb" {
   tags = "${local.altered_tags}"
 
   environment {
-    variables = "${local.altered_tags}"
+      variables = "${merge(local.altered_tags, map("ELASTICSEARCH_URL", "https://${aws_elasticsearch_domain.search.endpoint}"))}"
   }
 }
 resource "aws_lambda_permission" "alb_allow_alb_log" {

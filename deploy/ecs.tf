@@ -37,11 +37,11 @@ module "container_definition" {
     {
       name  = "sha"
       value = "${var.source_rev}"
-    }#,
-    #{
-    #  name = "elasticsearch_domain"
-    #  value = "https://${aws_elasticsearch_domain.search.kibana_endpoint}"
-    #}
+    },
+    {
+      name = "elasticsearch_domain"
+      value = "https://${aws_elasticsearch_domain.search.endpoint}"
+    }
   ]
 }
 

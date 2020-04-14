@@ -39,6 +39,6 @@ namespace Altered.Logs
             .AddHttpClient<ProxyDashboard>().Services
             .AddSingleton<LogTerraformS3Event>();
 
-        static readonly Uri DefaultElasticSearchUri = new Uri("https://search-altered-logs-bguqgsgczqwijgrmxahh6wkdpa.us-east-1.es.amazonaws.com");
+        static readonly Uri DefaultElasticSearchUri = new Uri(Environment.GetEnvironmentVariable("ELASTICSEARCH_URL") ?? "https://search-altered-logs-bguqgsgczqwijgrmxahh6wkdpa.us-east-1.es.amazonaws.com");
     }
 }
