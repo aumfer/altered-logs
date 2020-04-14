@@ -1,4 +1,4 @@
-resource "aws_iam_role" "iam_role" {
+resource "aws_iam_role" "iam_lambda_alb" {
     name = "${var.repo_name}-${var.branch_name}-alb"
     tags = "${local.altered_tags}"
 
