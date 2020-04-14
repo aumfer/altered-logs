@@ -33,13 +33,15 @@ data "aws_iam_policy_document" "iam" {
     }
 
     statement {
-        sid = "codebuild"
+        sid = "altered-logs"
         effect = "Allow"
         resources = [
             "*"
         ]
         actions = [
-            "codebuild:BatchGetProjects"
+            "codebuild:BatchGetProjects",
+            "ecs:DescribeTasks",
+            "elasticloadbalancing:DescribeTags"
         ]
     }
 }
