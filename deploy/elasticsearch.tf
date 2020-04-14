@@ -21,7 +21,7 @@ resource "aws_iam_service_linked_role" "slr" {
 
 resource "aws_elasticsearch_domain" "search" {
   domain_name           = "${var.repo_name}-${var.branch_name}"
-  elasticsearch_version = "6.5"
+  elasticsearch_version = "7.4"
 
   cluster_config {
     instance_type = "i3.large.elasticsearch"
@@ -35,12 +35,12 @@ resource "aws_elasticsearch_domain" "search" {
 
   access_policies = "${data.aws_iam_policy_document.es_policy.json}"
 
-  vpc_options {
-    #subnet_ids = ["${data.aws_subnet_ids.subnets.ids}"]
-    subnet_ids = ["${data.aws_subnet_ids.subnets.ids[0]}"]
+  # vpc_options {
+  #   #subnet_ids = ["${data.aws_subnet_ids.subnets.ids}"]
+  #   subnet_ids = ["${data.aws_subnet_ids.subnets.ids[0]}"]
 
-    security_group_ids = ["${aws_security_group.security_group.id}"]
-  }
+  #   security_group_ids = ["${aws_security_group.security_group.id}"]
+  # }
 
   snapshot_options {
     automated_snapshot_start_hour = 0
