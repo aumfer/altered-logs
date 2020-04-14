@@ -9,7 +9,7 @@ namespace Altered.Logs
     {
         public DateTime Time { get; set; }
 
-        public string App { get; set; }
+        public string Repo { get; set; }
 
         public string Env { get; set; }
 
