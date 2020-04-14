@@ -14,7 +14,7 @@ resource "aws_s3_bucket_notification" "tf_notify" {
 resource "aws_lambda_function" "tf" {
   filename         = "../publish.zip"
   function_name    = "${var.repo_name}-${var.branch_name}-tf"
-  role             = "arn:aws:iam::002067833750:role/acct-managed/altered-logs-lambda"
+  role             = "${aws_iam_role.iam.arn}"
   handler          = "Altered.Logs::Altered.Logs.Terraform.LogTerraformS3EventLambda::Execute"
   source_code_hash = "${base64sha256(file("../publish.zip"))}"
   runtime          = "dotnetcore2.1"

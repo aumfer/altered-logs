@@ -1,16 +1,18 @@
-resource "aws_iam_role" "iam_lambda_alb" {
+resource "aws_iam_role" "iam" {
     name = "${var.repo_name}-${var.branch_name}-alb"
     tags = "${local.altered_tags}"
 
-    assume_role_policy = "${data.aws_iam_policy_document.iam_lambda_alb_assume_role_policy.json}"
+    assume_role_policy = "${data.aws_iam_policy_document.iam_assume_role_policy.json}"
 }
 
-data "aws_iam_policy_document" "iam_lambda_alb" {
+data "aws_iam_policy_document" "iam" {
     statement {
         sid       = "get"
         effect    = "Allow"
         resources = [
-            "${data.aws_s3_bucket.alb_logs.id}/",
+            "${data.aws_s3_bucket.alb_logs.arn}/*",
+            "${data.aws_s3_bucket.elb_logs.arn}/*",
+            "${data.aws_s3_bucket.tf_state.arn}/*"
         ]
         actions = [
             "s3:GetObject"
@@ -31,7 +33,7 @@ data "aws_iam_policy_document" "iam_lambda_alb" {
     }
 }
 
-data "aws_iam_policy_document" "iam_lambda_alb_assume_role_policy" {
+data "aws_iam_policy_document" "iam_assume_role_policy" {
     statement {
         sid       = "exec"
         effect    = "Allow"
@@ -47,22 +49,22 @@ data "aws_iam_policy_document" "iam_lambda_alb_assume_role_policy" {
     }
 }
 
-resource "aws_iam_policy" "iam_lambda_alb" {
+resource "aws_iam_policy" "iam" {
   name   = "${var.repo_name}-${var.branch_name}-alb"
-  policy = "${data.aws_iam_policy_document.iam_lambda_alb.json}"
+  policy = "${data.aws_iam_policy_document.iam.json}"
 }
 
-resource "aws_iam_role_policy_attachment" "iam_lambda_alb" {
-  role       = "${aws_iam_role.iam_lambda_alb.name}"
-  policy_arn = "${aws_iam_policy.iam_lambda_alb.arn}"
+resource "aws_iam_role_policy_attachment" "iam" {
+  role       = "${aws_iam_role.iam.name}"
+  policy_arn = "${aws_iam_policy.iam.arn}"
 }
 
-resource "aws_iam_role_policy_attachment" "iam_lambda_alb_AmazonECSTaskExecutionRolePolicy" {
-  role       = "${aws_iam_role.iam_lambda_alb.name}"
+resource "aws_iam_role_policy_attachment" "iam_AmazonECSTaskExecutionRolePolicy" {
+  role       = "${aws_iam_role.iam.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-resource "aws_iam_role_policy_attachment" "iam_lambda_alb_AmazonEC2ContainerServiceforEC2Role" {
-  role       = "${aws_iam_role.iam_lambda_alb.name}"
+resource "aws_iam_role_policy_attachment" "iam_AmazonEC2ContainerServiceforEC2Role" {
+  role       = "${aws_iam_role.iam.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }

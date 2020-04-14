@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "codepipeline" {
   filename         = "../publish.zip"
   function_name    = "${var.repo_name}-${var.branch_name}-codepipeline"
-  role             = "arn:aws:iam::002067833750:role/acct-managed/altered-logs-lambda"
+  role             = "${aws_iam_role.iam.arn}"
   handler          = "Altered.Logs::Altered.Logs.CodePipeline.LogCodePipelineEventLambda::Execute"
   source_code_hash = "${base64sha256(file("../publish.zip"))}"
   runtime          = "dotnetcore2.1"

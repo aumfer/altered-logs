@@ -10,7 +10,7 @@ resource "aws_s3_bucket_notification" "elb_log_notify" {
 resource "aws_lambda_function" "elb" {
   filename         = "../publish.zip"
   function_name    = "${var.repo_name}-${var.branch_name}-elb"
-  role             = "arn:aws:iam::002067833750:role/acct-managed/altered-logs-lambda"
+  role             = "${aws_iam_role.iam.arn}"
   handler          = "Altered.Logs::Altered.Logs.Elb.LogElbS3EventLambda::Execute"
   source_code_hash = "${base64sha256(file("../publish.zip"))}"
   runtime          = "dotnetcore2.1"
