@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "iam_assume_role_policy" {
         principals {
             type = "Service"
             # everything
-            identifiers = ["lambda.amazonaws.com", "ec2.amazonaws.com", "ecs-tasks.amazonaws.com", "ecs.amazonaws.com", "ec2.application-autoscaling.amazonaws.com", "ecs.application-autoscaling.amazonaws.com"]
+            identifiers = ["lambda.amazonaws.com", "ec2.amazonaws.com", "ecs-tasks.amazonaws.com", "ecs.amazonaws.com", "ec2.application-autoscaling.amazonaws.com", "ecs.application-autoscaling.amazonaws.com", "es.amazonaws.com"]
         }
     }
 }
@@ -67,4 +67,9 @@ resource "aws_iam_role_policy_attachment" "iam_AmazonECSTaskExecutionRolePolicy"
 resource "aws_iam_role_policy_attachment" "iam_AmazonEC2ContainerServiceforEC2Role" {
   role       = "${aws_iam_role.iam.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+}
+
+resource "aws_iam_role_policy_attachment" "iam_AWSServiceRoleForAmazonElasticsearchService" {
+  role       = "${aws_iam_role.iam.name}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSServiceRoleForAmazonElasticsearchService"
 }
