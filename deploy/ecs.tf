@@ -20,7 +20,7 @@ module "container_definition" {
   ]
 
   log_options = {
-    "awslogs-group"         = "${aws_cloudwatch_log_group.container_logs.name}"
+    "awslogs-group"         = "${aws_cloudwatch_log_group.container_logs.arn}"
     "awslogs-region"        = "${var.aws_region}"
     "awslogs-stream-prefix" = "ecs"
   }
@@ -37,11 +37,11 @@ module "container_definition" {
     {
       name  = "sha"
       value = "${var.source_rev}"
-    },
-    {
-      name = "elasticsearch_domain"
-      value = "https://${aws_elasticsearch_domain.search.kibana_endpoint}"
-    }
+    }#,
+    #{
+    #  name = "elasticsearch_domain"
+    #  value = "https://${aws_elasticsearch_domain.search.kibana_endpoint}"
+    #}
   ]
 }
 
