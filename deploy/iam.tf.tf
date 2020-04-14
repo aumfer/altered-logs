@@ -68,8 +68,3 @@ resource "aws_iam_role_policy_attachment" "iam_AmazonEC2ContainerServiceforEC2Ro
   role       = "${aws_iam_role.iam.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
-
-resource "aws_iam_role_policy_attachment" "iam_AWSServiceRoleForAmazonElasticsearchService" {
-  role       = "${aws_iam_role.iam.name}"
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSServiceRoleForAmazonElasticsearchService"
-}
