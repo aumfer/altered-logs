@@ -40,7 +40,7 @@ module "container_definition" {
     },
     {
       name = "elasticsearch_domain"
-      value = "https://${aws_elasticsearch_domain.search.endpoint}"
+      value = "https://${aws_elasticsearch_domain.search.kibana_endpoint}"
     }
   ]
 }
