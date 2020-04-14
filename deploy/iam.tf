@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "iam" {
     }
 
     statement {
-        sid = "altered-logs"
+        sid = "query"
         effect = "Allow"
         resources = [
             "*"
